@@ -38,6 +38,10 @@ public class InputHandler extends KeyAdapter {
             moving = true;
         }
 
+        if (pressedKeys.contains(KeyEvent.VK_W)) {
+            yogi.jump();
+        }
+
         if (!moving) {
             yogi.stopMoving();
         }
