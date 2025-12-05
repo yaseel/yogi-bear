@@ -53,9 +53,13 @@ public class GamePanel extends JPanel {
             );
 
             if (yogiBounds.intersects(tileBounds)) {
-                if (yogi.getVelocityY() >= 0) {
-                    int yogiBottom = yogi.getY() + yogi.getHeight();
-                    int tileTop = tile.getY();
+
+                int yogiBottom = yogi.getY() + yogi.getHeight();
+                int yogiTop = yogi.getY();
+                int tileTop = tile.getY();
+                int tileBottom = tile.getY() + tile.getSize();
+
+                if (yogi.getVelocityY() > 0) {
                     int previousYogiBottom = yogiBottom - yogi.getVelocityY();
 
                     if (previousYogiBottom <= tileTop + 5 && yogiBottom > tileTop) {
@@ -80,6 +84,16 @@ public class GamePanel extends JPanel {
                             yogi.setX(tileLeft - yogi.getWidth());
                         } else if (yogiLeft < tileRight && yogiLeft > tileRight - 10 && yogiRight > tileRight) {
                             yogi.setX(tileRight);
+                        }
+                    }
+
+                    if (yogi.getVelocityY() < 0) {
+                        int previousYogiTop = yogiTop - yogi.getVelocityY();
+
+                        if (previousYogiTop >= tileBottom - 5 && yogiTop < tileBottom) {
+                            yogi.setY(tileBottom);
+                            yogi.setVelocityY(0);
+                            yogi.setOnGround(false);
                         }
                     }
                 }
