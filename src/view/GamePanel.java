@@ -33,6 +33,7 @@ public class GamePanel extends JPanel {
             inputHandler.update();
             yogi.update(level.getWidth());
             checkCollisions();
+            checkBagCollection();
             repaint();
         });
         gameLoop.start();
@@ -123,6 +124,14 @@ public class GamePanel extends JPanel {
         }
     }
 
+    private void checkBagCollection() {
+        for (BrownBag bag : level.getBags()) {
+            if (!bag.isCollected() && yogi.getBounds().intersects(bag.getBounds())) {
+                bag.collect();
+            }
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -137,6 +146,13 @@ public class GamePanel extends JPanel {
             } else if (tile.getType() == Tile.Type.GROUND) {
                 g.setColor(new Color(90, 60, 30));
                 g.fillRect(tile.getX(), tile.getY(), tile.getSize(), tile.getSize());
+            }
+        }
+
+        g.setColor(new Color(139, 69, 19));
+        for (BrownBag bag : level.getBags()) {
+            if (!bag.isCollected()) {
+                g.fillRect(bag.getX(), bag.getY(), bag.getSize(), bag.getSize());
             }
         }
 

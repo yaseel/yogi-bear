@@ -6,7 +6,8 @@ public class Tile {
         WALL, // #
         PLATFORM, // =
         GROUND, // _
-        SPAWN_POINT // Y
+        SPAWN_POINT, // Y
+        BAG // *
     }
 
     private Type type;

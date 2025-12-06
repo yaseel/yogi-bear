@@ -9,6 +9,7 @@ import java.util.List;
 public class LevelLoader {
     public static Level loadLevel(String filename) {
         List<Tile> tiles = new ArrayList<>();
+        List<BrownBag> bags = new ArrayList<>();
         int yogiStartX = 0;
         int yogiStartY = 0;
         int maxWidth = 0;
@@ -35,6 +36,9 @@ public class LevelLoader {
                         yogiStartX = x;
                         yogiStartY = y;
                         type = Tile.Type.AIR;
+                    } else if (type == Tile.Type.BAG) {
+                        bags.add(new BrownBag(x, y));
+                        type = Tile.Type.AIR;
                     }
 
                     tiles.add(new Tile(type, x, y));
@@ -47,7 +51,7 @@ public class LevelLoader {
 
         int widthInPixels = maxWidth * GameConfig.TILE_SIZE;
         int heightInPixels = height * GameConfig.TILE_SIZE;
-        return new Level(tiles, yogiStartX, yogiStartY, widthInPixels, heightInPixels);
+        return new Level(tiles, bags, yogiStartX, yogiStartY, widthInPixels, heightInPixels);
     }
 
     private static Tile.Type charToTileType(char c) {
@@ -56,6 +60,7 @@ public class LevelLoader {
             case '=' -> Tile.Type.PLATFORM;
             case '_' -> Tile.Type.GROUND;
             case 'Y' -> Tile.Type.SPAWN_POINT;
+            case '*' -> Tile.Type.BAG;
             default -> Tile.Type.AIR;
         };
     }
