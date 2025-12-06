@@ -9,6 +9,7 @@ import java.awt.*;
 public class GamePanel extends JPanel {
     private YogiBear yogi;
     private Level level;
+    private GameModel gameModel;
     private InputHandler inputHandler;
     private Timer gameLoop;
 
@@ -20,6 +21,7 @@ public class GamePanel extends JPanel {
         setFocusable(true);
 
         yogi = new YogiBear(level.getYogiStartX(), level.getYogiStartY());
+        gameModel = new GameModel();
 
         inputHandler = new InputHandler(yogi);
         addKeyListener(inputHandler);
@@ -128,6 +130,7 @@ public class GamePanel extends JPanel {
         for (BrownBag bag : level.getBags()) {
             if (!bag.isCollected() && yogi.getBounds().intersects(bag.getBounds())) {
                 bag.collect();
+                gameModel.addScore(GameConfig.POINTS_PER_BAG);
             }
         }
     }
@@ -158,5 +161,10 @@ public class GamePanel extends JPanel {
 
         g.setColor(new Color(139, 90, 43));
         g.fillRect(yogi.getX(), yogi.getY(), yogi.getWidth(), yogi.getHeight());
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Score: " + gameModel.getScore(), 10, 25);
+        g.drawString("Lives: " + gameModel.getLives(), 10, 50);
     }
 }
