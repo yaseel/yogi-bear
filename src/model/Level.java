@@ -50,10 +50,6 @@ public class Level {
     }
 
     public void resetLevel() {
-        for (BrownBag bag : bags) {
-            bag.reset();
-        }
-
         for (Agent agent : agents) {
             agent.reset();
         }
