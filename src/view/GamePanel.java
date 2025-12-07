@@ -79,8 +79,10 @@ public class GamePanel extends JPanel {
     }
 
     private void update() {
-        inputHandler.update();
-        yogi.update();
+        if (!stateManager.isShowingMessage()) {
+            inputHandler.update();
+            yogi.update();
+        }
 
         for (Agent agent : level.getAgents()) {
             agent.update();
