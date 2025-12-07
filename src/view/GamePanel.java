@@ -4,6 +4,7 @@ import controller.InputHandler;
 import model.*;
 import model.agent.Agent;
 import view.collision.AgentCollisionHandler;
+import view.collision.BoundaryHandler;
 import view.collision.CollisionHandler;
 import view.game.GameStateManager;
 import view.renderer.GameRenderer;
@@ -19,11 +20,14 @@ public class GamePanel extends JPanel {
 
     private CollisionHandler collisionHandler;
     private AgentCollisionHandler agentCollisionHandler;
+    private BoundaryHandler boundaryHandler;
     private GameStateManager stateManager;
     private GameRenderer renderer;
 
+    private int currentLevelNumber = 1;
+
     public GamePanel() {
-        level = LevelLoader.loadLevel("src/resources/levels/level1.txt");
+        loadLevel(currentLevelNumber);
 
         setPreferredSize(new Dimension(GameConfig.LEVEL_WIDTH, GameConfig.LEVEL_HEIGHT));
         setBackground(new Color(135, 206, 235));
@@ -34,6 +38,7 @@ public class GamePanel extends JPanel {
 
         collisionHandler = new CollisionHandler(yogi, level);
         agentCollisionHandler = new AgentCollisionHandler(yogi, level);
+        boundaryHandler = new BoundaryHandler(yogi);
         stateManager = new GameStateManager(level, yogi, gameModel);
         renderer = new GameRenderer();
 
@@ -41,6 +46,24 @@ public class GamePanel extends JPanel {
         addKeyListener(inputHandler);
 
         startGameLoop();
+    }
+
+    private void loadLevel(int levelNumber) {
+        level = LevelLoader.loadLevel("src/resources/levels/level" + levelNumber + ".txt");
+    }
+
+    private void loadNextLevel() {
+        currentLevelNumber++;
+        loadLevel(currentLevelNumber);
+
+        yogi.setX(level.getYogiStartX());
+        yogi.setY(level.getYogiStartY());
+        yogi.setVelocityY(0);
+        yogi.setOnGround(false);
+
+        collisionHandler = new CollisionHandler(yogi, level);
+        agentCollisionHandler = new AgentCollisionHandler(yogi, level);
+        stateManager = new GameStateManager(level, yogi, gameModel);
     }
 
     private void startGameLoop() {
@@ -64,12 +87,24 @@ public class GamePanel extends JPanel {
         checkBagCollection();
 
         if (!stateManager.isShowingMessage()) {
+            BoundaryHandler.BoundaryResult boundaryResult = boundaryHandler.checkBoundaries();
+            if (boundaryResult == BoundaryHandler.BoundaryResult.FAIL) {
+                stateManager.onFell();
+            } else if (boundaryResult == BoundaryHandler.BoundaryResult.NEXT_LEVEL) {
+                stateManager.onLevelComplete();
+            }
+
             if (agentCollisionHandler.checkAgentCollisions()) {
                 stateManager.onCaught();
             }
         }
 
         stateManager.updateMessage();
+
+        if (stateManager.isLevelComplete() && !stateManager.isShowingMessage()) {
+            loadNextLevel();
+            stateManager.resetLevelCompleteFlag();
+        }
     }
 
     private void checkBagCollection() {

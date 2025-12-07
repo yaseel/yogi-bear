@@ -13,6 +13,7 @@ public class GameStateManager {
     private String displayMessage;
     private int messageAlpha;
     private int messageTimer;
+    private boolean levelComplete;
 
     public GameStateManager(Level level, YogiBear yogi, GameModel gameModel) {
         this.level = level;
@@ -21,6 +22,7 @@ public class GameStateManager {
         this.displayMessage = null;
         this.messageAlpha = 0;
         this.messageTimer = 0;
+        this.levelComplete = false;
     }
 
     public void onCaught() {
@@ -28,6 +30,20 @@ public class GameStateManager {
         messageAlpha = 255;
         messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
         gameModel.loseLife();
+    }
+
+    public void onFell() {
+        displayMessage = "FELL!";
+        messageAlpha = 255;
+        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
+        gameModel.loseLife();
+    }
+
+    public void onLevelComplete() {
+        displayMessage = "LEVEL COMPLETE!";
+        messageAlpha = 255;
+        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
+        levelComplete = true;
     }
 
     public void updateMessage() {
@@ -38,7 +54,10 @@ public class GameStateManager {
             if (messageTimer == 0) {
                 displayMessage = null;
                 messageAlpha = 0;
-                resetLevel();
+
+                if (!levelComplete) {
+                    resetLevel();
+                }
             }
         }
     }
@@ -65,5 +84,13 @@ public class GameStateManager {
 
     public int getMessageAlpha() {
         return messageAlpha;
+    }
+
+    public boolean isLevelComplete() {
+        return levelComplete;
+    }
+
+    public void resetLevelCompleteFlag() {
+        levelComplete = false;
     }
 }
