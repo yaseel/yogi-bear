@@ -12,7 +12,6 @@ public class BoundaryHandler {
     }
 
     public BoundaryResult checkBoundaries(Level level) {
-        int yogiLeft = yogi.getX();
         int yogiRight = yogi.getX() + yogi.getWidth();
         int yogiBottom = yogi.getY() + yogi.getHeight();
 
@@ -24,7 +23,7 @@ public class BoundaryHandler {
             return BoundaryResult.FAIL;
         }
 
-        if (yogiLeft > GameConfig.LEVEL_WIDTH) {
+        if (yogiRight >= GameConfig.LEVEL_WIDTH) {
             if (level.getRemainingBags() == 0) {
                 return BoundaryResult.NEXT_LEVEL;
             }
