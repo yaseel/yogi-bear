@@ -63,6 +63,10 @@ public class GamePanel extends JPanel {
         currentLevelNumber++;
         loadLevel(currentLevelNumber);
 
+        resetLevelState();
+    }
+
+    private void resetLevelState() {
         yogi.setX(level.getYogiStartX());
         yogi.setY(level.getYogiStartY());
         yogi.setVelocityY(0);
@@ -146,13 +150,6 @@ public class GamePanel extends JPanel {
 
         gameModel.reset();
 
-        yogi.setX(level.getYogiStartX());
-        yogi.setY(level.getYogiStartY());
-        yogi.setVelocityY(0);
-        yogi.setOnGround(false);
-
-        collisionHandler = new CollisionHandler(yogi, level);
-        agentCollisionHandler = new AgentCollisionHandler(yogi, level);
-        stateManager = new GameStateManager(level, yogi, gameModel);
+        resetLevelState();
     }
 }
