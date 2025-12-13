@@ -49,7 +49,7 @@ public class GamePanel extends JPanel {
         stateManager = new GameStateManager(level, yogi, gameModel);
         renderer = new GameRenderer();
 
-        inputHandler = new InputHandler(yogi, level);
+        inputHandler = new InputHandler(yogi, collisionHandler);
         addKeyListener(inputHandler);
 
         startGameLoop();
@@ -96,7 +96,7 @@ public class GamePanel extends JPanel {
             agent.update();
         }
 
-        collisionHandler.checkAllCollisions();
+        collisionHandler.checkCollisions();
         checkBagCollection();
 
         if (!stateManager.isShowingMessage()) {

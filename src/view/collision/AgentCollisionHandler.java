@@ -15,6 +15,7 @@ public class AgentCollisionHandler {
         this.level = level;
     }
 
+    // checks if yogi touched a guard or was spotted by one
     public boolean checkAgentCollisions() {
         Rectangle yogiBounds = yogi.getBounds();
 

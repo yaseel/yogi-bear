@@ -1,8 +1,6 @@
 package model.yogi;
 
 import model.GameConfig;
-import model.level.Level;
-import model.level.Tile;
 
 import java.awt.*;
 
@@ -30,38 +28,17 @@ public class YogiBear {
             crouching = true;
             int prevHeight = height;
             height /= 2;
-            y += (prevHeight - height);
+            y += (prevHeight - height); // adjust position so feet stay in place
         }
     }
 
-    public void standUp(Level level) {
-        if (crouching) {
-            if (canStandUp(level)) {
-                crouching = false;
-                int prevHeight = height;
-                height *= 2;
-                y -= (height - prevHeight);
-            }
+    public void standUp(boolean canStand) {
+        if (crouching && canStand) {
+            crouching = false;
+            int prevHeight = height;
+            height *= 2;
+            y -= (height - prevHeight); // adjust position so feet stay in place
         }
-    }
-
-    private boolean canStandUp(Level level) {
-        int standingHeight = height * 2;
-        int headSpace = standingHeight - height;
-        int checkY = y - headSpace;
-
-        for (Tile tile : level.getTiles()) {
-            if (tile.getType() == Tile.Type.WALL || tile.getType() == Tile.Type.GROUND) {
-                Rectangle tileRect = new Rectangle(tile.getX(), tile.getY(), tile.getSize(), tile.getSize());
-                Rectangle headRect = new Rectangle(x, checkY, width, headSpace);
-
-                if (tileRect.intersects(headRect)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     public void moveLeft() {
@@ -98,6 +75,7 @@ public class YogiBear {
     public void update() {
         x += velocityX;
 
+        // keep yogi within level bounds
         if (x < 0)
             x = 0;
         if (x > GameConfig.LEVEL_WIDTH - width)
