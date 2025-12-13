@@ -42,14 +42,13 @@ public class LevelLoader {
         while ((line = br.readLine()) != null) {
             if (line.trim().equals("ROUTES")) {
                 inRoutesSection = true;
-                continue;
-            }
-
-            if (inRoutesSection) {
-                parseAgentRoute(line, data);
             } else {
-                processTileRow(line, row, data);
-                row++;
+                if (inRoutesSection) {
+                    parseAgentRoute(line, data);
+                } else {
+                    processTileRow(line, row, data);
+                    row++;
+                }
             }
         }
     }

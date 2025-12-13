@@ -24,25 +24,24 @@ public class CollisionHandler {
 
         // check yogi against every solid tile
         for (Tile tile : level.getTiles()) {
-            if (!tile.isSolid())
-                continue;
+            if (tile.isSolid()) {
+                Rectangle tileBounds = new Rectangle(
+                        tile.getX(),
+                        tile.getY(),
+                        tile.getSize(),
+                        tile.getSize());
 
-            Rectangle tileBounds = new Rectangle(
-                    tile.getX(),
-                    tile.getY(),
-                    tile.getSize(),
-                    tile.getSize());
+                if (yogiBounds.intersects(tileBounds)) {
+                    // check if yogi landed on top of this tile
+                    if (handleGroundCollision(tile)) {
+                        touchingGround = true;
+                    }
 
-            if (yogiBounds.intersects(tileBounds)) {
-                // check if yogi landed on top of this tile
-                if (handleGroundCollision(tile)) {
-                    touchingGround = true;
-                }
-
-                // walls and ground block from all sides, platforms only from top
-                if (tile.getType() != Tile.Type.PLATFORM) {
-                    handleWallCollision(tile);
-                    handleCeilingCollision(tile);
+                    // walls and ground block from all sides, platforms only from top
+                    if (tile.getType() != Tile.Type.PLATFORM) {
+                        handleWallCollision(tile);
+                        handleCeilingCollision(tile);
+                    }
                 }
             }
         }
