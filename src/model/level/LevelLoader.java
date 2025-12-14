@@ -2,8 +2,8 @@ package model.level;
 
 import model.BrownBag;
 import model.GameConfig;
-import model.agent.Agent;
-import model.agent.AgentSpawn;
+import model.entity.agent.Agent;
+import model.entity.agent.AgentSpawn;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

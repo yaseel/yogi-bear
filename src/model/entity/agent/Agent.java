@@ -1,17 +1,14 @@
-package model.agent;
+package model.entity.agent;
 
 import model.GameConfig;
-import model.yogi.YogiBear;
+import model.entity.Entity;
+import model.entity.yogi.YogiBear;
 
-import java.awt.*;
-
-public class Agent {
+public class Agent extends Entity {
     public enum Direction {
         LEFT, RIGHT
     }
 
-    private int x, y;
-    private int width, height;
     private int startX, startY;
     private Direction direction;
 
@@ -23,12 +20,9 @@ public class Agent {
     private int pauseTimer;
 
     public Agent(int x, int y, int patrolStartCol, int patrolEndCol) {
-        this.x = x;
-        this.y = y;
+        super(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE * 2);
         this.startX = x;
         this.startY = y;
-        this.width = GameConfig.TILE_SIZE;
-        this.height = GameConfig.TILE_SIZE * 2;
 
         this.patrolStartCol = patrolStartCol;
         this.patrolEndCol = patrolEndCol;
@@ -39,6 +33,7 @@ public class Agent {
         this.pauseTimer = 0;
     }
 
+    @Override
     public void update() {
         if (pauseTimer > 0) {
             pauseTimer--;
@@ -90,10 +85,6 @@ public class Agent {
         }
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
     public void reset() {
         x = startX;
         y = startY;
@@ -101,21 +92,5 @@ public class Agent {
         targetX = patrolEndCol * GameConfig.TILE_SIZE;
         direction = Direction.RIGHT;
         pauseTimer = 0;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 }

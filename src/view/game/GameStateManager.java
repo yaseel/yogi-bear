@@ -3,7 +3,7 @@ package view.game;
 import model.GameConfig;
 import model.GameModel;
 import model.level.Level;
-import model.yogi.YogiBear;
+import model.entity.yogi.YogiBear;
 
 public class GameStateManager {
     private Level level;
@@ -72,7 +72,6 @@ public class GameStateManager {
         displayMessage = GameMessages.COLLECT_ALL_BAGS;
         messageAlpha = 255;
         messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION / 2;
-        shouldResetLevel = false;
     }
 
     public void updateMessage() {

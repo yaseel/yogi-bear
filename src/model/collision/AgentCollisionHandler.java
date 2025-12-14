@@ -1,8 +1,8 @@
-package view.collision;
+package model.collision;
 
-import model.agent.Agent;
+import model.entity.agent.Agent;
 import model.level.Level;
-import model.yogi.YogiBear;
+import model.entity.yogi.YogiBear;
 
 import java.awt.Rectangle;
 
@@ -15,7 +15,6 @@ public class AgentCollisionHandler {
         this.level = level;
     }
 
-    // checks if yogi touched a guard or was spotted by one
     public boolean checkAgentCollisions() {
         Rectangle yogiBounds = yogi.getBounds();
         boolean caught = false;

@@ -2,14 +2,12 @@ package view.panel;
 
 import controller.InputHandler;
 import model.*;
-import model.agent.Agent;
+import model.entity.agent.Agent;
 import model.level.Level;
 import model.level.LevelLoader;
-import model.yogi.YogiBear;
+import model.entity.yogi.YogiBear;
 import view.GameFrame;
-import view.collision.AgentCollisionHandler;
-import view.collision.BoundaryHandler;
-import view.collision.CollisionHandler;
+import model.collision.CollisionSystem;
 import view.game.GameMessages;
 import view.game.GameStateManager;
 import view.renderer.GameRenderer;
@@ -24,9 +22,7 @@ public class GamePanel extends JPanel {
     private GameModel gameModel;
     private InputHandler inputHandler;
 
-    private CollisionHandler collisionHandler;
-    private AgentCollisionHandler agentCollisionHandler;
-    private BoundaryHandler boundaryHandler;
+    private CollisionSystem collisionSystem;
     private GameStateManager stateManager;
     private GameRenderer renderer;
 
@@ -45,13 +41,11 @@ public class GamePanel extends JPanel {
         yogi = new YogiBear(level.getYogiStartX(), level.getYogiStartY());
         gameModel = new GameModel();
 
-        collisionHandler = new CollisionHandler(yogi, level);
-        agentCollisionHandler = new AgentCollisionHandler(yogi, level);
-        boundaryHandler = new BoundaryHandler(yogi);
+        collisionSystem = new CollisionSystem(yogi, level);
         stateManager = new GameStateManager(level, yogi, gameModel);
         renderer = new GameRenderer();
 
-        inputHandler = new InputHandler(yogi, collisionHandler);
+        inputHandler = new InputHandler(yogi, collisionSystem);
         addKeyListener(inputHandler);
 
         startGameLoop();
@@ -74,12 +68,11 @@ public class GamePanel extends JPanel {
         yogi.setVelocityY(0);
         yogi.setOnGround(false);
 
-        collisionHandler = new CollisionHandler(yogi, level);
-        agentCollisionHandler = new AgentCollisionHandler(yogi, level);
+        collisionSystem = new CollisionSystem(yogi, level);
         stateManager = new GameStateManager(level, yogi, gameModel);
 
-        // update input handler with new collision handler for new level
-        inputHandler.setCollisionHandler(collisionHandler);
+        // update input handler with new collision system for new level
+        inputHandler.setCollisionSystem(collisionSystem);
     }
 
     private void startGameLoop() {
@@ -102,21 +95,18 @@ public class GamePanel extends JPanel {
             agent.update();
         }
 
-        collisionHandler.checkCollisions();
         checkBagCollection();
 
         if (!stateManager.isShowingMessage()) {
-            BoundaryHandler.BoundaryResult boundaryResult = boundaryHandler.checkBoundaries(level);
-            if (boundaryResult == BoundaryHandler.BoundaryResult.FAIL) {
+            CollisionSystem.CollisionResult result = collisionSystem.checkAll();
+            if (result == CollisionSystem.CollisionResult.FELL) {
                 stateManager.onFell();
-            } else if (boundaryResult == BoundaryHandler.BoundaryResult.NEXT_LEVEL) {
+            } else if (result == CollisionSystem.CollisionResult.LEVEL_COMPLETE) {
                 stateManager.onLevelComplete();
-            } else if (boundaryResult == BoundaryHandler.BoundaryResult.BLOCKED) {
-                stateManager.onBlocked();
-            }
-
-            if (agentCollisionHandler.checkAgentCollisions()) {
+            } else if (result == CollisionSystem.CollisionResult.CAUGHT) {
                 stateManager.onCaught();
+            } else if (result == CollisionSystem.CollisionResult.BLOCKED) {
+                stateManager.onBlocked();
             }
         }
 

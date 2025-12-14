@@ -1,7 +1,7 @@
 package model.level;
 
 import model.BrownBag;
-import model.agent.Agent;
+import model.entity.agent.Agent;
 
 import java.util.List;
 

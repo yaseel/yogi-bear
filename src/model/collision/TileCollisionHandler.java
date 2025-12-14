@@ -1,22 +1,22 @@
-package view.collision;
+package model.collision;
 
-import model.*;
+import model.GameConfig;
 import model.level.Level;
 import model.level.Tile;
-import model.yogi.YogiBear;
+import model.entity.yogi.YogiBear;
 
 import java.awt.Rectangle;
 
-public class CollisionHandler {
+public class TileCollisionHandler {
     private YogiBear yogi;
     private Level level;
 
-    public CollisionHandler(YogiBear yogi, Level level) {
+    public TileCollisionHandler(YogiBear yogi, Level level) {
         this.yogi = yogi;
         this.level = level;
     }
 
-    public void checkCollisions() {
+    public void checkTileCollisions() {
         boolean landedOnSomething = false;
 
         for (Tile tile : level.getTiles()) {

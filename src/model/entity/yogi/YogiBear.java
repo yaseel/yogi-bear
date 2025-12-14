@@ -1,24 +1,15 @@
-package model.yogi;
+package model.entity.yogi;
 
 import model.GameConfig;
+import model.entity.Entity;
 
-import java.awt.*;
-
-public class YogiBear {
-    private int x, y;
-    private int width, height;
-    private int velocityX, velocityY;
+public class YogiBear extends Entity {
     private boolean onGround;
     private boolean crouching;
     private boolean dropThroughPlatform;
 
     public YogiBear(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.width = GameConfig.TILE_SIZE;
-        this.height = GameConfig.TILE_SIZE * 2;
-        this.velocityX = 0;
-        this.velocityY = 0;
+        super(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE * 2);
         this.onGround = false;
         this.crouching = false;
     }
@@ -72,6 +63,7 @@ public class YogiBear {
         }
     }
 
+    @Override
     public void update() {
         x += velocityX;
 
@@ -83,22 +75,6 @@ public class YogiBear {
 
         velocityY += GameConfig.GRAVITY;
         y += velocityY;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public boolean isCrouching() {
@@ -117,28 +93,8 @@ public class YogiBear {
         dropThroughPlatform = false;
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
-    }
-
-    public int getVelocityY() {
-        return velocityY;
-    }
-
-    public void setVelocityY(int velocityY) {
-        this.velocityY = velocityY;
     }
 
     public boolean isJumping() {

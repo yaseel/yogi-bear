@@ -1,8 +1,8 @@
-package view.collision;
+package model.collision;
 
 import model.GameConfig;
 import model.level.Level;
-import model.yogi.YogiBear;
+import model.entity.yogi.YogiBear;
 
 public class BoundaryHandler {
     private YogiBear yogi;
@@ -11,22 +11,14 @@ public class BoundaryHandler {
         this.yogi = yogi;
     }
 
-    // checks if yogi went out of bounds or reached the level exit
     public BoundaryResult checkBoundaries(Level level) {
         int yogiRight = yogi.getX() + yogi.getWidth();
         int yogiBottom = yogi.getY() + yogi.getHeight();
 
-        // fell off the left edge
-        if (yogiRight < 0) {
-            return BoundaryResult.FAIL;
-        }
-
-        // fell off the bottom
         if (yogiBottom > GameConfig.LEVEL_HEIGHT) {
-            return BoundaryResult.FAIL;
+            return BoundaryResult.FELL;
         }
 
-        // reached the right edge (level exit)
         if (yogiRight >= GameConfig.LEVEL_WIDTH) {
             if (level.getRemainingBags() == 0) {
                 return BoundaryResult.NEXT_LEVEL;
@@ -40,7 +32,7 @@ public class BoundaryHandler {
 
     public enum BoundaryResult {
         NONE,
-        FAIL,
+        FELL,
         NEXT_LEVEL,
         BLOCKED
     }

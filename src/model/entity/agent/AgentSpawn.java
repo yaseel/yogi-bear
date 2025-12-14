@@ -1,4 +1,4 @@
-package model.agent;
+package model.entity.agent;
 
 public class AgentSpawn {
     public int x, y;
