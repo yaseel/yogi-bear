@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
     private GameStateManager stateManager;
     private GameRenderer renderer;
 
-    private int currentLevelNumber = 10;
+    private int currentLevelNumber = 1;
     private GameFrame gameFrame;
 
     public GamePanel(GameFrame gameFrame) {
@@ -73,6 +73,9 @@ public class GamePanel extends JPanel {
 
         // update input handler with new collision system for new level
         inputHandler.setCollisionSystem(collisionSystem);
+
+        // clear any stuck keys
+        inputHandler.clearAllKeys();
     }
 
     private void startGameLoop() {

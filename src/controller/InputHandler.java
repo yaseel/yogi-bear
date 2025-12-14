@@ -60,4 +60,8 @@ public class InputHandler extends KeyAdapter {
     public void setCollisionSystem(CollisionSystem collisionSystem) {
         this.collisionSystem = collisionSystem;
     }
+
+    public void clearAllKeys() {
+        pressedKeys.clear();
+    }
 }
