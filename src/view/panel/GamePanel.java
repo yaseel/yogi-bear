@@ -10,11 +10,13 @@ import view.GameFrame;
 import view.collision.AgentCollisionHandler;
 import view.collision.BoundaryHandler;
 import view.collision.CollisionHandler;
+import view.game.GameMessages;
 import view.game.GameStateManager;
 import view.renderer.GameRenderer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class GamePanel extends JPanel {
     private YogiBear yogi;
@@ -75,6 +77,9 @@ public class GamePanel extends JPanel {
         collisionHandler = new CollisionHandler(yogi, level);
         agentCollisionHandler = new AgentCollisionHandler(yogi, level);
         stateManager = new GameStateManager(level, yogi, gameModel);
+
+        // update input handler with new collision handler for new level
+        inputHandler.setCollisionHandler(collisionHandler);
     }
 
     private void startGameLoop() {
@@ -87,7 +92,8 @@ public class GamePanel extends JPanel {
     }
 
     private void update() {
-        if (!stateManager.isShowingMessage()) {
+        // stop yogi when message is displayed, except for collect all bags message
+        if (!stateManager.isShowingMessage() || Objects.equals(stateManager.getDisplayMessage(), GameMessages.COLLECT_ALL_BAGS)) {
             inputHandler.update();
             yogi.update();
         }

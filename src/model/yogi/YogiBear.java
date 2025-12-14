@@ -28,7 +28,7 @@ public class YogiBear {
             crouching = true;
             int prevHeight = height;
             height /= 2;
-            y += (prevHeight - height); // adjust position so feet stay in place
+            y += (prevHeight - height);
         }
     }
 
@@ -37,7 +37,7 @@ public class YogiBear {
             crouching = false;
             int prevHeight = height;
             height *= 2;
-            y -= (height - prevHeight); // adjust position so feet stay in place
+            y -= (height - prevHeight);
         }
     }
 

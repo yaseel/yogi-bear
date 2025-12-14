@@ -18,15 +18,17 @@ public class AgentCollisionHandler {
     // checks if yogi touched a guard or was spotted by one
     public boolean checkAgentCollisions() {
         Rectangle yogiBounds = yogi.getBounds();
+        boolean caught = false;
 
         for (Agent agent : level.getAgents()) {
-            if (yogiBounds.intersects(agent.getBounds())) {
-                return true;
+            if (!caught && yogiBounds.intersects(agent.getBounds())) {
+                caught = true;
             }
-            if (agent.canSeeYogi(yogi)) {
-                return true;
+            if (!caught && agent.canSeeYogi(yogi)) {
+                caught = true;
             }
         }
-        return false;
+
+        return caught;
     }
 }

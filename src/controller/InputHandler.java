@@ -56,4 +56,8 @@ public class InputHandler extends KeyAdapter {
             yogi.stopMoving();
         }
     }
+
+    public void setCollisionHandler(CollisionHandler collisionHandler) {
+        this.collisionHandler = collisionHandler;
+    }
 }
