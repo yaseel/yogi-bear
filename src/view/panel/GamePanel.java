@@ -59,7 +59,6 @@ public class GamePanel extends JPanel {
     private void loadNextLevel() {
         currentLevelNumber++;
         loadLevel(currentLevelNumber);
-
         resetLevelState();
     }
 
@@ -113,11 +112,21 @@ public class GamePanel extends JPanel {
         stateManager.updateMessage();
 
         if (stateManager.isLevelComplete() && !stateManager.isShowingMessage()) {
-            loadNextLevel();
-            stateManager.resetLevelCompleteFlag();
+            if (currentLevelNumber >= GameConfig.LAST_LEVEL_NUM) {
+                stateManager.onGameFinished();
+                stateManager.resetLevelCompleteFlag();
+            } else {
+                loadNextLevel();
+                stateManager.resetLevelCompleteFlag();
+            }
         }
 
         if (stateManager.isGameOver() && !stateManager.isShowingMessage()) {
+            gameFrame.showPanel(PanelType.MENU);
+            resetGame();
+        }
+
+        if (stateManager.isGameFinished() && !stateManager.isShowingMessage()) {
             gameFrame.showPanel(PanelType.MENU);
             resetGame();
         }

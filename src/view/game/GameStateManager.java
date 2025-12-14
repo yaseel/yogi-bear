@@ -16,6 +16,7 @@ public class GameStateManager {
     private int messageTimer;
     private boolean levelComplete;
     private boolean gameOver;
+    private boolean gameFinished;
     private boolean shouldResetLevel;
 
     public GameStateManager(Level level, YogiBear yogi, GameModel gameModel) {
@@ -27,6 +28,7 @@ public class GameStateManager {
         this.messageTimer = 0;
         this.levelComplete = false;
         this.gameOver = false;
+        this.gameFinished = false;
         this.shouldResetLevel = false;
     }
 
@@ -43,7 +45,7 @@ public class GameStateManager {
         }
 
         messageAlpha = 255;
-        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
+        messageTimer = GameConfig.MESSAGE_DURATION;
     }
 
     public void onFell() {
@@ -59,26 +61,26 @@ public class GameStateManager {
         }
 
         messageAlpha = 255;
-        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
+        messageTimer = GameConfig.MESSAGE_DURATION;
     }
 
     public void onLevelComplete() {
         displayMessage = GameMessages.LEVEL_COMPLETE;
         messageAlpha = 255;
-        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION;
+        messageTimer = GameConfig.MESSAGE_DURATION;
         levelComplete = true;
     }
 
     public void onBlocked() {
         displayMessage = GameMessages.COLLECT_ALL_BAGS;
         messageAlpha = 255;
-        messageTimer = GameConfig.CAUGHT_MESSAGE_DURATION / 2;
+        messageTimer = GameConfig.MESSAGE_DURATION / 2;
     }
 
     public void updateMessage() {
         if (displayMessage != null && messageTimer > 0) {
             messageTimer--;
-            messageAlpha = (int) (255 * ((double) messageTimer / GameConfig.CAUGHT_MESSAGE_DURATION));
+            messageAlpha = (int) (255 * ((double) messageTimer / GameConfig.MESSAGE_DURATION));
 
             if (messageTimer == 0) {
                 displayMessage = null;
@@ -102,6 +104,13 @@ public class GameStateManager {
 
     public void onBagCollected(BrownBag bag) {
         gameModel.addScore(bag.getValue());
+    }
+
+    public void onGameFinished() {
+        displayMessage = GameMessages.YOU_WIN;
+        messageAlpha = 255;
+        messageTimer = GameConfig.MESSAGE_DURATION;
+        gameFinished = true;
     }
 
     public boolean isShowingMessage() {
@@ -130,5 +139,9 @@ public class GameStateManager {
 
     public void resetGameOverFlag() {
         gameOver = false;
+    }
+
+    public boolean isGameFinished() {
+        return gameFinished;
     }
 }
