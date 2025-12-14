@@ -97,7 +97,8 @@ public class GamePanel extends JPanel {
 
         checkBagCollection();
 
-        if (!stateManager.isShowingMessage()) {
+        if (!stateManager.isShowingMessage()
+                || Objects.equals(stateManager.getDisplayMessage(), GameMessages.COLLECT_ALL_BAGS)) {
             CollisionSystem.CollisionResult result = collisionSystem.checkAll();
             if (result == CollisionSystem.CollisionResult.FELL) {
                 stateManager.onFell();
