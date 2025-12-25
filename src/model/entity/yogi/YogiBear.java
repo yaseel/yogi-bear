@@ -11,7 +11,7 @@ public class YogiBear extends Entity {
     public static final int CROUCH_WALK = 4;
 
     public static final int ANIMATION_COUNT = 5;
-    public static final int MAX_FRAMES = 5;
+    public static final int MAX_FRAMES = 4;
 
     public static final int SPRITE_WIDTH = 349;
     public static final int SPRITE_HEIGHT = 483;
@@ -92,7 +92,28 @@ public class YogiBear extends Entity {
         y += velocityY;
 
         updateAction();
+        updateJumpAnimation();
         updateAnimationTick();
+    }
+
+    private void updateJumpAnimation() {
+        if (action != JUMP) {
+            return;
+        }
+
+        if (velocityY < 0) {
+            animationIndex = 0;
+        } else {
+            animationIndex = 1;
+        }
+    }
+
+    @Override
+    protected void updateAnimationTick() {
+        if (action == JUMP) {
+            return;
+        }
+        super.updateAnimationTick();
     }
 
     @Override
@@ -100,7 +121,7 @@ public class YogiBear extends Entity {
         return switch (action) {
             case IDLE -> 4;
             case WALK -> 3;
-            case JUMP -> 5;
+            case JUMP -> 2;
             case CROUCH_IDLE -> 1;
             case CROUCH_WALK -> 3;
             default -> throw new IllegalStateException("Player action not found: " + action);
