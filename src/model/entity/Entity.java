@@ -1,11 +1,14 @@
 package model.entity;
 
+import model.GameConfig;
+
 import java.awt.Rectangle;
 
 public abstract class Entity {
     protected int x, y;
     protected int width, height;
     protected int velocityX, velocityY;
+    protected String spritePath;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -14,6 +17,7 @@ public abstract class Entity {
         this.height = height;
         this.velocityX = 0;
         this.velocityY = 0;
+        this.spritePath = GameConfig.BASE_SPRITE_PATH;
     }
 
     public abstract void update();
@@ -38,13 +42,11 @@ public abstract class Entity {
         return height;
     }
 
-    public int getVelocityX() {
-        return velocityX;
-    }
-
     public int getVelocityY() {
         return velocityY;
     }
+
+    public String getSpritePath() { return spritePath; }
 
     public void setX(int x) {
         this.x = x;
@@ -52,10 +54,6 @@ public abstract class Entity {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public void setVelocityX(int velocityX) {
-        this.velocityX = velocityX;
     }
 
     public void setVelocityY(int velocityY) {

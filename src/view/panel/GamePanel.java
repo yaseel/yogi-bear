@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
 
         collisionSystem = new CollisionSystem(yogi, level);
         stateManager = new GameStateManager(level, yogi, gameModel);
-        renderer = new GameRenderer();
+        renderer = new GameRenderer(yogi);
 
         inputHandler = new InputHandler(yogi, collisionSystem);
         addKeyListener(inputHandler);
@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
     }
 
     private void loadLevel(int levelNumber) {
-        level = LevelLoader.loadLevel("resources/levels/level" + levelNumber + ".txt");
+        level = LevelLoader.loadLevel("src/resources/levels/level" + levelNumber + ".txt");
     }
 
     private void loadNextLevel() {
@@ -156,7 +156,7 @@ public class GamePanel extends JPanel {
 
         g2d.scale(scaleX, scaleY);
 
-        renderer.render(g2d, level, yogi, gameModel);
+        renderer.render(g2d, level, gameModel);
         renderer.renderMessage(g2d, stateManager.getDisplayMessage(), stateManager.getMessageAlpha(),
                 GameConfig.LEVEL_WIDTH, GameConfig.LEVEL_HEIGHT);
     }

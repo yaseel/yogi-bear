@@ -4,6 +4,15 @@ import model.GameConfig;
 import model.entity.Entity;
 
 public class YogiBear extends Entity {
+    public static final int IDLE_FRAMES = 4;
+    public static final int WALK_FRAMES = 3;
+    public static final int JUMP_FRAMES = 5;
+    public static final int CROUCH_IDLE_FRAMES = 1;
+    public static final int CROUCH_WALK_FRAMES = 3;
+
+    public static final int SPRITE_WIDTH = 349;
+    public static final int SPRITE_HEIGHT = 483;
+
     private boolean onGround;
     private boolean crouching;
     private boolean dropThroughPlatform;
@@ -12,6 +21,7 @@ public class YogiBear extends Entity {
         super(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE * 2);
         this.onGround = false;
         this.crouching = false;
+        this.spritePath += "yogi.png";
     }
 
     public void crouch() {

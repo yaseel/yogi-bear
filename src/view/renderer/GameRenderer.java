@@ -10,16 +10,72 @@ import model.level.Level;
 import model.level.Tile;
 import model.entity.yogi.YogiBear;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GameRenderer {
 
-    public void render(Graphics g, Level level, YogiBear yogi, GameModel gameModel) {
+    private YogiBear yogi;
+    private BufferedImage yogiSprite;
+    private BufferedImage[] yogiIdle;
+
+    private int animationTick, animationIndex;
+
+    public GameRenderer(YogiBear yogi) {
+        this.yogi = yogi;
+        loadSprites();
+        loadAnimations();
+    }
+
+    public void render(Graphics g, Level level, GameModel gameModel) {
+        updateAnimationTick();
+
         renderTiles(g, level);
         renderBags(g, level);
-        renderYogi(g, yogi);
+        renderYogi(g);
         renderAgents(g, level);
         renderUI(g, gameModel);
+    }
+
+    private void loadSprites() {
+        yogiSprite = loadSprite(yogi.getSpritePath());
+    }
+
+    private BufferedImage loadSprite(String path) {
+        try {
+            File spriteFile = new File(path);
+            if (spriteFile.exists()) {
+                return ImageIO.read(spriteFile);
+            } else {
+                System.err.println("Sprite not found: " + spriteFile.getAbsolutePath());
+                return null;
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load sprite: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void loadAnimations() {
+        yogiIdle = new BufferedImage[YogiBear.IDLE_FRAMES];
+
+        for (int i = 0; i < yogiIdle.length; i++) {
+            yogiIdle[i] = yogiSprite.getSubimage(i * YogiBear.SPRITE_WIDTH, 0, YogiBear.SPRITE_WIDTH, YogiBear.SPRITE_HEIGHT);
+        }
+    }
+
+    private void updateAnimationTick() {
+        animationTick++;
+
+        if (animationTick >= GameConfig.ANIMATION_SPEED) {
+            animationTick = 0;
+            animationIndex++;
+
+            if (animationIndex >= yogiIdle.length) animationIndex = 0;
+        }
     }
 
     private void renderTiles(Graphics g, Level level) {
@@ -48,9 +104,12 @@ public class GameRenderer {
         }
     }
 
-    private void renderYogi(Graphics g, YogiBear yogi) {
-        g.setColor(new Color(139, 90, 43));
-        g.fillRect(yogi.getX(), yogi.getY(), yogi.getWidth(), yogi.getHeight());
+    private void renderYogi(Graphics g) {
+        double scale = (double) yogi.getHeight() / YogiBear.SPRITE_HEIGHT;
+        int scaledWidth = (int) (YogiBear.SPRITE_WIDTH * scale);
+        int scaledHeight = yogi.getHeight();
+
+        g.drawImage(yogiIdle[animationIndex], yogi.getX(), yogi.getY(), scaledWidth, scaledHeight, null);
     }
 
     private void renderAgents(Graphics g, Level level) {
