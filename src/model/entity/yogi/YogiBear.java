@@ -120,7 +120,7 @@ public class YogiBear extends Entity {
     protected int getActionFrames(int action) {
         return switch (action) {
             case IDLE -> 4;
-            case WALK -> 3;
+            case WALK -> 4;
             case JUMP -> 2;
             case CROUCH_IDLE -> 1;
             case CROUCH_WALK -> 3;
