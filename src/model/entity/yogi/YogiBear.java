@@ -46,6 +46,7 @@ public class YogiBear extends Entity {
     }
 
     public void moveLeft() {
+        facingRight = false;
         if (crouching) {
             velocityX = -GameConfig.MOVE_SPEED / 2;
         } else {
@@ -54,6 +55,7 @@ public class YogiBear extends Entity {
     }
 
     public void moveRight() {
+        facingRight = true;
         if (crouching) {
             velocityX = GameConfig.MOVE_SPEED / 2;
         } else {

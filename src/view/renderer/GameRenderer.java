@@ -116,9 +116,21 @@ public class GameRenderer {
 
         int scaledWidth = (int) (YogiBear.SPRITE_WIDTH * scale);
         int action = yogi.getAction();
+        BufferedImage sprite = yogiAnimations[action][yogi.getAnimationIndex()];
 
-        g.drawImage(yogiAnimations[action][yogi.getAnimationIndex()], yogi.getX(), yogiY, scaledWidth, scaledHeight,
-                null);
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (!yogi.isFacingRight()) {
+            g2d.drawImage(sprite,
+                    yogi.getX() + scaledWidth, yogiY,
+                    -scaledWidth, scaledHeight,
+                    null);
+        } else {
+            g2d.drawImage(sprite,
+                    yogi.getX(), yogiY,
+                    scaledWidth, scaledHeight,
+                    null);
+        }
     }
 
     private void renderAgents(Graphics g, Level level) {

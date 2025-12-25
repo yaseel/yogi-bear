@@ -13,6 +13,7 @@ public abstract class Entity {
 
     protected int animationTick = 0;
     protected int animationIndex = 0;
+    protected boolean facingRight = true;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -73,6 +74,10 @@ public abstract class Entity {
 
     public int getAnimationIndex() {
         return animationIndex;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
     }
 
     public String getSpritePath() {
