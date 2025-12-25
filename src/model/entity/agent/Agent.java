@@ -62,6 +62,16 @@ public class Agent extends Entity {
         }
     }
 
+    @Override
+    protected void updateAction() {
+
+    }
+
+    @Override
+    protected int getActionFrames(int action) {
+        return 1;
+    }
+
     public boolean canSeeYogi(YogiBear yogi) {
         int visionRange = GameConfig.AGENT_VISION_RANGE * GameConfig.TILE_SIZE;
 

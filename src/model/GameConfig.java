@@ -2,7 +2,7 @@ package model;
 
 public class GameConfig {
     public static final int FPS = 60;
-    public static final int ANIMATION_SPEED = 60;
+    public static final int ANIMATION_SPEED = 15;
 
     public static final int TILE_SIZE = 32;
     public static final int LEVEL_HEIGHT = 18 * TILE_SIZE;

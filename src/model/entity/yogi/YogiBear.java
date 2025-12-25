@@ -4,11 +4,14 @@ import model.GameConfig;
 import model.entity.Entity;
 
 public class YogiBear extends Entity {
-    public static final int IDLE_FRAMES = 4;
-    public static final int WALK_FRAMES = 3;
-    public static final int JUMP_FRAMES = 5;
-    public static final int CROUCH_IDLE_FRAMES = 1;
-    public static final int CROUCH_WALK_FRAMES = 3;
+    public static final int IDLE = 0;
+    public static final int WALK = 1;
+    public static final int JUMP = 2;
+    public static final int CROUCH_IDLE = 3;
+    public static final int CROUCH_WALK = 4;
+
+    public static final int ANIMATION_COUNT = 5;
+    public static final int MAX_FRAMES = 5;
 
     public static final int SPRITE_WIDTH = 349;
     public static final int SPRITE_HEIGHT = 483;
@@ -85,6 +88,45 @@ public class YogiBear extends Entity {
 
         velocityY += GameConfig.GRAVITY;
         y += velocityY;
+
+        updateAction();
+        updateAnimationTick();
+    }
+
+    @Override
+    protected int getActionFrames(int action) {
+        return switch (action) {
+            case IDLE -> 4;
+            case WALK -> 3;
+            case JUMP -> 5;
+            case CROUCH_IDLE -> 1;
+            case CROUCH_WALK -> 3;
+            default -> throw new IllegalStateException("Player action not found: " + action);
+        };
+    }
+
+    @Override
+    protected void updateAction() {
+        int oldAction = action;
+
+        if (!onGround) {
+            action = JUMP;
+        } else if (crouching) {
+            if (velocityX == 0) {
+                action = CROUCH_IDLE;
+            } else {
+                action = CROUCH_WALK;
+            }
+        } else if (velocityX != 0) {
+            action = WALK;
+        } else {
+            action = IDLE;
+        }
+
+        if (action != oldAction) {
+            animationIndex = 0;
+            animationTick = 0;
+        }
     }
 
     public boolean isCrouching() {

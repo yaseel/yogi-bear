@@ -20,9 +20,7 @@ public class GameRenderer {
 
     private YogiBear yogi;
     private BufferedImage yogiSprite;
-    private BufferedImage[] yogiIdle;
-
-    private int animationTick, animationIndex;
+    private BufferedImage[][] yogiAnimations;
 
     public GameRenderer(YogiBear yogi) {
         this.yogi = yogi;
@@ -31,8 +29,6 @@ public class GameRenderer {
     }
 
     public void render(Graphics g, Level level, GameModel gameModel) {
-        updateAnimationTick();
-
         renderTiles(g, level);
         renderBags(g, level);
         renderYogi(g);
@@ -60,21 +56,17 @@ public class GameRenderer {
     }
 
     private void loadAnimations() {
-        yogiIdle = new BufferedImage[YogiBear.IDLE_FRAMES];
+        yogiAnimations = new BufferedImage[YogiBear.ANIMATION_COUNT][YogiBear.MAX_FRAMES];
 
-        for (int i = 0; i < yogiIdle.length; i++) {
-            yogiIdle[i] = yogiSprite.getSubimage(i * YogiBear.SPRITE_WIDTH, 0, YogiBear.SPRITE_WIDTH, YogiBear.SPRITE_HEIGHT);
-        }
-    }
+        for (int i = 0; i < yogiAnimations.length; i++) {
+            for (int j = 0; j < yogiAnimations[i].length; j++) {
+                yogiAnimations[i][j] = yogiSprite.getSubimage(
+                        j * YogiBear.SPRITE_WIDTH,
+                        i * YogiBear.SPRITE_HEIGHT,
+                        YogiBear.SPRITE_WIDTH,
+                        YogiBear.SPRITE_HEIGHT);
+            }
 
-    private void updateAnimationTick() {
-        animationTick++;
-
-        if (animationTick >= GameConfig.ANIMATION_SPEED) {
-            animationTick = 0;
-            animationIndex++;
-
-            if (animationIndex >= yogiIdle.length) animationIndex = 0;
         }
     }
 
@@ -96,20 +88,37 @@ public class GameRenderer {
     private void renderBags(Graphics g, Level level) {
         for (BrownBag bag : level.getBags()) {
             if (!bag.isCollected()) {
-                if (bag instanceof MethBag) g.setColor(Color.CYAN);
-                else if (bag instanceof GunBag) g.setColor(Color.DARK_GRAY);
-                else if (bag instanceof MoneyBag) g.setColor(Color.GREEN);
+                if (bag instanceof MethBag)
+                    g.setColor(Color.CYAN);
+                else if (bag instanceof GunBag)
+                    g.setColor(Color.DARK_GRAY);
+                else if (bag instanceof MoneyBag)
+                    g.setColor(Color.GREEN);
                 g.fillRect(bag.getX(), bag.getY(), bag.getSize(), bag.getSize());
             }
         }
     }
 
     private void renderYogi(Graphics g) {
-        double scale = (double) yogi.getHeight() / YogiBear.SPRITE_HEIGHT;
-        int scaledWidth = (int) (YogiBear.SPRITE_WIDTH * scale);
-        int scaledHeight = yogi.getHeight();
+        double scale;
+        int scaledHeight;
+        int yogiY;
 
-        g.drawImage(yogiIdle[animationIndex], yogi.getX(), yogi.getY(), scaledWidth, scaledHeight, null);
+        if (!yogi.isCrouching()) {
+            scale = (double) yogi.getHeight() / YogiBear.SPRITE_HEIGHT;
+            scaledHeight = yogi.getHeight();
+            yogiY = yogi.getY();
+        } else {
+            scale = (double) yogi.getHeight() * 2 / YogiBear.SPRITE_HEIGHT;
+            scaledHeight = yogi.getHeight() * 2;
+            yogiY = yogi.getY() - GameConfig.TILE_SIZE;
+        }
+
+        int scaledWidth = (int) (YogiBear.SPRITE_WIDTH * scale);
+        int action = yogi.getAction();
+
+        g.drawImage(yogiAnimations[action][yogi.getAnimationIndex()], yogi.getX(), yogiY, scaledWidth, scaledHeight,
+                null);
     }
 
     private void renderAgents(Graphics g, Level level) {

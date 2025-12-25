@@ -9,6 +9,10 @@ public abstract class Entity {
     protected int width, height;
     protected int velocityX, velocityY;
     protected String spritePath;
+    protected int action;
+
+    protected int animationTick = 0;
+    protected int animationIndex = 0;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -21,6 +25,23 @@ public abstract class Entity {
     }
 
     public abstract void update();
+
+    protected abstract void updateAction();
+
+    protected abstract int getActionFrames(int action);
+
+    protected void updateAnimationTick() {
+        animationTick++;
+
+        if (animationTick >= GameConfig.ANIMATION_SPEED) {
+            animationTick = 0;
+            animationIndex++;
+
+            if (animationIndex >= getActionFrames(action)) {
+                animationIndex = 0;
+            }
+        }
+    }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
@@ -46,7 +67,17 @@ public abstract class Entity {
         return velocityY;
     }
 
-    public String getSpritePath() { return spritePath; }
+    public int getAction() {
+        return action;
+    }
+
+    public int getAnimationIndex() {
+        return animationIndex;
+    }
+
+    public String getSpritePath() {
+        return spritePath;
+    }
 
     public void setX(int x) {
         this.x = x;
