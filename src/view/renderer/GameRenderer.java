@@ -113,14 +113,12 @@ public class GameRenderer {
                     scaledHeight = MethBasket.SIZE;
                     scaledWidth = (int) (MethBasket.SPRITE_WIDTH * scale);
                     sprite = collectibleSubImages[Collectible.METH_BASKET][Collectible.DEFAULT_STATE];
-                }
-                else if (collectible instanceof Gun) {
+                } else if (collectible instanceof Gun) {
                     scale = (double) Gun.SIZE / Collectible.SPRITE_HEIGHT;
                     scaledHeight = Gun.SIZE;
                     scaledWidth = (int) (Gun.SPRITE_WIDTH * scale);
                     sprite = collectibleSubImages[Collectible.GUN][Collectible.DEFAULT_STATE];
-                }
-                else {
+                } else {
                     scale = (double) Money.SIZE / Collectible.SPRITE_HEIGHT;
                     scaledHeight = Money.SIZE;
                     scaledWidth = (int) (Money.SPRITE_WIDTH * scale);
@@ -132,8 +130,7 @@ public class GameRenderer {
                         sprite,
                         collectible.getX(), collectible.getY(),
                         scaledWidth, scaledHeight,
-                        null
-                );
+                        null);
             } else if (collectible.isCollected() && collectible instanceof Gun) {
                 scale = (double) Gun.SIZE / Collectible.SPRITE_HEIGHT;
                 scaledHeight = Gun.SIZE;
@@ -145,8 +142,7 @@ public class GameRenderer {
                         sprite,
                         collectible.getX(), collectible.getY(),
                         scaledWidth, scaledHeight,
-                        null
-                );
+                        null);
             }
         }
     }
@@ -163,7 +159,7 @@ public class GameRenderer {
         } else {
             scale = (double) yogi.getHeight() * 2 / YogiBear.SPRITE_HEIGHT;
             scaledHeight = yogi.getHeight() * 2;
-            yogiY = yogi.getY() - GameConfig.TILE_SIZE;
+            yogiY = yogi.getY() - GameConfig.TILE_SIZE * (YogiBear.TILE_HEIGHT - 2);
         }
 
         int scaledWidth = (int) (YogiBear.SPRITE_WIDTH * scale);
