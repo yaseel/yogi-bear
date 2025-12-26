@@ -58,6 +58,7 @@ public class Agent extends Entity {
         if (movingRight) {
             x += GameConfig.AGENT_SPEED;
             facingRight = true;
+
             if (x >= targetX) {
                 x = targetX;
                 movingRight = false;

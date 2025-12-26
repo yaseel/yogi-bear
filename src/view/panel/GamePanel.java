@@ -2,7 +2,7 @@ package view.panel;
 
 import controller.InputHandler;
 import model.*;
-import model.bag.BrownBag;
+import model.collectible.Collectible;
 import model.entity.agent.Agent;
 import model.level.Level;
 import model.level.LevelLoader;
@@ -92,10 +92,10 @@ public class GamePanel extends JPanel {
             agent.update();
         }
 
-        checkBagCollection();
+        checkCollection();
 
-        // stop yogi when message is displayed, except for collect all bags message
-        if (!stateManager.isShowingMessage() || Objects.equals(stateManager.getDisplayMessage(), GameMessages.COLLECT_ALL_BAGS)) {
+        // stop yogi when message is displayed, except for collect all baskets message
+        if (!stateManager.isShowingMessage() || Objects.equals(stateManager.getDisplayMessage(), GameMessages.COLLECT_ALL_BASKETS)) {
 
             inputHandler.update();
             yogi.update();
@@ -135,11 +135,11 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void checkBagCollection() {
-        for (BrownBag bag : level.getBags()) {
-            if (!bag.isCollected() && yogi.getBounds().intersects(bag.getBounds())) {
-                bag.collect();
-                stateManager.onBagCollected(bag);
+    private void checkCollection() {
+        for (Collectible collectible : level.getCollectibles()) {
+            if (!collectible.isCollected() && yogi.getBounds().intersects(collectible.getBounds())) {
+                collectible.collect();
+                stateManager.onCollect(collectible);
             }
         }
     }

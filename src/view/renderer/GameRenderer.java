@@ -1,10 +1,10 @@
 package view.renderer;
 
 import model.*;
-import model.bag.BrownBag;
-import model.bag.GunBag;
-import model.bag.MethBag;
-import model.bag.MoneyBag;
+import model.collectible.Collectible;
+import model.collectible.Gun;
+import model.collectible.MethBasket;
+import model.collectible.Money;
 
 import model.entity.agent.Agent;
 import model.level.Level;
@@ -32,7 +32,7 @@ public class GameRenderer {
 
     public void render(Graphics g, YogiBear yogi, Level level, GameModel gameModel) {
         renderTiles(g, level);
-        renderBags(g, level);
+        renderCollectibles(g, level);
         renderYogi(g, yogi);
         renderAgents(g, level);
         renderUI(g, gameModel);
@@ -93,16 +93,16 @@ public class GameRenderer {
         }
     }
 
-    private void renderBags(Graphics g, Level level) {
-        for (BrownBag bag : level.getBags()) {
-            if (!bag.isCollected()) {
-                if (bag instanceof MethBag)
+    private void renderCollectibles(Graphics g, Level level) {
+        for (Collectible collectible : level.getCollectibles()) {
+            if (!collectible.isCollected()) {
+                if (collectible instanceof MethBasket)
                     g.setColor(Color.CYAN);
-                else if (bag instanceof GunBag)
+                else if (collectible instanceof Gun)
                     g.setColor(Color.DARK_GRAY);
-                else if (bag instanceof MoneyBag)
+                else if (collectible instanceof Money)
                     g.setColor(Color.GREEN);
-                g.fillRect(bag.getX(), bag.getY(), bag.getSize(), bag.getSize());
+                g.fillRect(collectible.getX(), collectible.getY(), collectible.getSize(), collectible.getSize());
             }
         }
     }

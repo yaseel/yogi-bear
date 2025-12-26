@@ -1,16 +1,16 @@
-package model.bag;
+package model.collectible;
 
 import model.GameConfig;
 
 import java.awt.*;
 
-public abstract class BrownBag {
+public abstract class Collectible {
     protected int x, y;
     protected int size;
     protected int value;
     protected boolean collected;
 
-    public BrownBag(int x, int y) {
+    public Collectible(int x, int y) {
         this.x = x;
         this.y = y;
         this.size = GameConfig.TILE_SIZE;
