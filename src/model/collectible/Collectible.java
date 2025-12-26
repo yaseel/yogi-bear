@@ -5,15 +5,29 @@ import model.GameConfig;
 import java.awt.*;
 
 public abstract class Collectible {
+    public static final String spritePath = GameConfig.BASE_SPRITE_PATH + "collectible.png";
+
+    public static final int GUN = 0;
+    public static final int METH_BASKET = 1;
+    public static final int MONEY = 2;
+
+    public static final int COLLECTIBLE_COUNT = 3;
+    public static final int MAX_FRAMES = 2;
+
+    public static final int DEFAULT_STATE = 0;
+
+    public static final int SPRITE_WIDTH = 250;
+    public static final int SPRITE_HEIGHT = 250;
+
+    public static final int SIZE = GameConfig.TILE_SIZE;
+
     protected int x, y;
-    protected int size;
     protected int value;
     protected boolean collected;
 
     public Collectible(int x, int y) {
         this.x = x;
         this.y = y;
-        this.size = GameConfig.TILE_SIZE;
         this.collected = false;
     }
 
@@ -26,7 +40,7 @@ public abstract class Collectible {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, size, size);
+        return new Rectangle(x, y, SIZE, SIZE);
     }
 
     public int getX() {
@@ -35,10 +49,6 @@ public abstract class Collectible {
 
     public int getY() {
         return y;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public int getValue() {
